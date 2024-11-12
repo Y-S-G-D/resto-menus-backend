@@ -11,14 +11,7 @@ export interface IOutlet extends Document {
   city: string;
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
-  password: {
-    type: StringConstructor;
-    required: boolean;
-    select: boolean;
-    minlength: number;
-    maxlength: number;
-    match: RegExp[];
-  };
+  password: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,12 +63,6 @@ const outletSchema: Schema<IOutlet> = new Schema(
     password: {
       type: String,
       required: true,
-      select:false,
-      minlength: 6,
-      maxlength: 16,
-      match: [
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/,
-      ],
     },
     
   },

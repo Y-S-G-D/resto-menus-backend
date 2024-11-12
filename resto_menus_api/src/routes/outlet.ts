@@ -8,7 +8,11 @@ router.post('/',async(req,res)=>{
     try{
 
         const outlet = await createOutlet(req.body)
-        res.status(200).json(outlet)
+        if(outlet){
+            res.status(200).json({message:"Outlet Created Successfully"})
+            return;
+        }
+        
     }catch(err:unknown){
         const error = err as Error
         const handledError = outletErrorHandler(error)  

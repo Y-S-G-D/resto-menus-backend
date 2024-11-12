@@ -1,7 +1,8 @@
 import OutletModel,{IOutlet} from "../models/Outlet";
-
-export async function createOutlet(outlet:IOutlet){
+import { hashPassword } from "../services/password_hasing";
+export async function createOutlet(outlet:IOutlet):Promise<IOutlet>{
     try{
+        outlet.password = await hashPassword(outlet.password);
         const newOutlet = await OutletModel.create(outlet);
         return newOutlet;
     }
