@@ -13,5 +13,8 @@ export function outletErrorHandler(err:Error):ErroResponse{
         const field = fieldMatch ? fieldMatch[1] : "unknown field";
         return { message: `Validation failed: ${field}`, statusCode: 400 }
     }
+    if(err.message.includes("Invalid Credentials")){
+        return {message:err.message,statusCode:401}
+    }
     return { message: err.message, statusCode: 500 }
 }
