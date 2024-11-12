@@ -7,7 +7,7 @@ import dbConnect from "./config/dbConnect";
 /// import routers
 import menus from "./routes/menus";
 import seed from "./routes/seed";
-
+import outlet from "./routes/outlet";
 // Load environment variables
 dotenv.config();
 
@@ -31,6 +31,8 @@ const PORT = process.env.PORT || 3003;
 // Routes
 app.use("/menus", menus);
 app.use("/seed", seed);
+app.use("/outlet", outlet);
+
 
 
 
