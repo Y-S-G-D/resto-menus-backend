@@ -1,4 +1,4 @@
-import express from "express";
+import express,{Request,Response} from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -25,12 +25,20 @@ app.get("/health-check", (req, res) => {
 // Port
 const PORT = process.env.PORT;
 const API_VERSION = process.env.API_VERSION;
+
+;
 app.use(`/${API_VERSION}`, indexRoute);
 
 
+app.get("*", (req:Request, res:Response) => {
+  console.log("Requested url not found🫥");
+  res.status(404).json({
+    success: false,
+    message: "Requested url not found🫥",
+  });
+})
 
-
-app.use(errorHandler)
+app.use(errorHandler);
 
 
   app.listen(PORT, () => {

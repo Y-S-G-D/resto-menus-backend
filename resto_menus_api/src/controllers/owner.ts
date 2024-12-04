@@ -13,6 +13,7 @@ export const createOwner = async (req:Request,res:Response,next:NextFunction):Pr
         });
         res.status(201).json(owner);
     } catch (error) {
+        // console.log("Error in createOwner", error);
         next(error);
     }
 

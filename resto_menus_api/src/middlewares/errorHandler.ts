@@ -1,30 +1,49 @@
-import { Request, Response, } from 'express';
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { Prisma } from '@prisma/client';
 
-// Define the error object type
-interface AppError extends Error {
-  status?: number; // Optional status code property
+interface CustomError extends Error {
+  status?: number;
 }
 
-// // Error handler middleware
-// function errorHandler(err: AppError, req: Request, res: Response,):void{
-//   console.error(err.stack);
+const errorHandler: ErrorRequestHandler = (
+  err: CustomError | Prisma.PrismaClientKnownRequestError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let status = 500;
+  let message = "Internal Server Error";
 
-//   const statusCode = err.status || 500;
-//   res.status(statusCode).json({
-//     success: false,
-//     message: err.message || 'Internal Server Error',
-//   });
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    switch (err.code) {
+      case "P2002":
+        status = 400;
+        message = `${(err.meta as { target: string[] })?.target} Already exist`;
+        break;
+      case "P2025":
+        status = 404;
+        message = "Record not found.";
+        break;
+      default:
+        status = 500;
+        message = "Database error occurred.";
+    }
+  } else if (err instanceof Prisma.PrismaClientValidationError) {
+    status = 400;
+    message = "Validation error occurred with the database query.";
+  } else if (err instanceof Prisma.PrismaClientInitializationError) {
+    status = 500;
+    message = "Database initialization error occurred.";
+  } else if (err instanceof Prisma.PrismaClientRustPanicError) {
+    status = 500;
+    message = "Unexpected database error occurred.";
+  }
 
-
-const errorHandler = (err: AppError, req: Request, res: Response,) => {
-    console.error(err.stack);
-
-    const statusCode = err.status || 500;
-    res.status(statusCode).json({
-      success: false,
-      message: err.message || 'Internal Server Error',
-    });
-  
+  res.status(status).json({
+    success: false,
+    message,
+  });
+  return next();
 };
 
 export default errorHandler;
