@@ -2,12 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
-import dbConnect from "./config/dbConnect";
 
-/// import routers
-import menus from "./routes/menus";
-import seed from "./routes/seed";
-import outlet from "./routes/outlet";
+import indexRoute from "./routes/index";
+import errorHandler from "./middlewares/errorHandler";
 // Load environment variables
 dotenv.config();
 
@@ -26,25 +23,16 @@ app.get("/health-check", (req, res) => {
 });
 
 // Port
-const PORT = process.env.PORT || 3003;
-
-// Routes
-app.use("/menus", menus);
-app.use("/seed", seed);
-app.use("/outlet", outlet);
+const PORT = process.env.PORT;
+const API_VERSION = process.env.API_VERSION;
+app.use(`/${API_VERSION}`, indexRoute);
 
 
 
 
+app.use(errorHandler)
 
-// Connect to MongoDB
-dbConnect()
-  .then(() => {
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
   });

@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")// This is your Prisma schema
+}
+
+model owner {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  isEmailVerified Boolean   @default(false)
+  password        String    
+  phoneNo         String    
+  outlets         outlet[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+}
+
+
+model outlet {
+  id              String   @id @default(uuid())
+  outletId        String   @unique
+  logoUrl         String
+  owner           owner    @relation(fields: [ownerId], references: [id])
+  ownerId         String
+  ownerName       String
+  mobileNo        String
+  outletName      String
+  outletType      String
+  email           String   @unique
+  city            String
+  isEmailVerified Boolean  @default(false)
+  isPhoneVerified Boolean  @default(false)
+  password        String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  employees       employee[]
+  items           item[]
+}
+
+
+model employee {
+  id                 String   @id @default(uuid())
+  outletId           String
+  outlet             outlet   @relation(fields: [outletId], references: [id])
+  name               String
+  employeeId         String
+  dob                DateTime
+  gender             String
+  phoneNo            String
+  doj                DateTime
+  shift              String
+  position           String
+  supervisor         String
+  salary             Float
+  accountNo          String
+  ifscCode           String
+  accountHolderName  String
+  aadharNo           String
+  loginId            String
+  password           String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model item {
+  id          String   @id @default(uuid())
+  outletId    String
+  outlet      outlet   @relation(fields: [outletId], references: [id])
+  name        String
+  description String
+  price       Float
+  category    String
+  imageUrls    String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
+
+
+

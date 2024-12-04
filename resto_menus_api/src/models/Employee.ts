@@ -5,6 +5,7 @@ import mongoose, { Schema } from "mongoose";
  * 
  * @interface IEmployee
  * 
+ * @property {Schema.Types.ObjectId} outletId - The unique identifier for the outlet.
  * @property {string} name - The name of the employee.
  * @property {string} employeeId - The unique identifier for the employee.
  * @property {Date} dob - The date of birth of the employee.
@@ -25,6 +26,7 @@ import mongoose, { Schema } from "mongoose";
  * @property {Date} updatedAt - The date when the employee record was last updated.
  */
 export interface IEmployee {
+  outletId: Schema.Types.ObjectId;
   name: string;
   employeeId: string;
   dob: Date;
@@ -47,6 +49,11 @@ export interface IEmployee {
 
 const employeeSchema: Schema<IEmployee> = new Schema(
   {
+    outletId: {
+      type: Schema.Types.ObjectId,
+      ref: "Outlet",
+      required: true,
+    },
     name: {
       type: String,
       required: [true, "Name is required"],
