@@ -2,6 +2,7 @@ import menuRouter from './menus'
 import outletRouter from './outlet'
 import seedRouter from './seed'
 import ownerRouter from './owner'
+import loginRouter from './login'
 
 import express, { Router } from 'express'
 // Initialize Express   
@@ -12,5 +13,6 @@ router.use('/menus', menuRouter)
 router.use('/outlet', outletRouter)
 router.use('/seed', seedRouter)
 router.use('/owner', ownerRouter)
+router.use('/login', loginRouter)
 
 export default router;

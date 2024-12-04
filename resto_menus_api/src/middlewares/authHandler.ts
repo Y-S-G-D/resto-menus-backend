@@ -6,7 +6,7 @@ dotenv.config();
 
 // Define a custom type for user objects
 interface User {
-  _id: string;
+  id: string;
   email:string;
   role:string;
 }
@@ -24,7 +24,7 @@ export const generateToken = (user: User, type: "access" | "refresh" = "access")
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in environment variables.");
   }
-  return jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn });
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn });
 };
 
 // Middleware to authenticate JWT token
