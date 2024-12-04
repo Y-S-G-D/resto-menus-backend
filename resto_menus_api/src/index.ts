@@ -27,7 +27,7 @@ const PORT = process.env.PORT;
 const API_VERSION = process.env.API_VERSION;
 
 ;
-app.use(`/${API_VERSION}`, indexRoute);
+app.use(`/api/${API_VERSION ?? "v1"}`, indexRoute);
 
 
 app.get("*", (req:Request, res:Response) => {

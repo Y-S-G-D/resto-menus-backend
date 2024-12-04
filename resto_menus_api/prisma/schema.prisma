@@ -29,7 +29,6 @@ model owner {
 
 model outlet {
   id              String   @id @default(uuid())
-  outletId        String   @unique
   logoUrl         String
   owner           owner    @relation(fields: [ownerId], references: [id])
   ownerId         String
@@ -44,7 +43,6 @@ model outlet {
   password        String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-
   employees       employee[]
   items           item[]
 }

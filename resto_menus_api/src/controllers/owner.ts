@@ -38,7 +38,7 @@ export const ownerLogin = async (req:Request,res:Response,next:NextFunction):Pro
         }
         /// generate token
         const token = generateToken({id:owner.id,email:owner.email,role:"owner"},"access");
-        
+
         const refreshToken = generateToken({id:owner.id,email:owner.email,role:"owner"},"refresh");
         setTokensInCookies(res, token, refreshToken);
         res.status(200).json({
@@ -55,6 +55,33 @@ export const ownerLogin = async (req:Request,res:Response,next:NextFunction):Pro
         });
     }catch(error){
         next(error)
+    }
+}
+
+export const createOutlet = async(req:Request, res:Response, next:NextFunction):Promise<void>=>{
+    try{
+        const outletData = req.body;
+
+        const hashedPassword = await bcrypt.hash(outletData.password, 10);
+        outletData.password = hashedPassword;
+        console.log(outletData);
+        const outlet = await prisma.outlet.create({
+            data:{
+                ...outletData,
+                owner:{
+                    connect:{
+                        id:req.user?.id
+                    }
+                }
+            }
+        });
+        // res.status(201).json(outlet);
+        res.status(201).json({
+            message:"Outlet created successfully",
+            data:outlet
+        })
+    }catch(err){
+        next(err);
     }
 }
 

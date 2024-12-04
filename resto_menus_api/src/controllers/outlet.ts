@@ -1,5 +1,5 @@
-import OutletModel,{IOutlet} from "../models/Outlet";
-import { hashPassword,comparePassword } from "../services/password_hasing";
+import OutletModel from "../models/Outlet";
+import { comparePassword } from "../services/password_hasing";
 import { generateToken } from "../services/token_service";
 
 
@@ -32,15 +32,15 @@ export async function signInOutlet(email:string,password:string):Promise<string>
  * @param outlet - The outlet details to be created.
  * @returns A promise that resolves to the newly created outlet.
  * @throws An error if the outlet creation fails.
- */
-export async function createOutlet(outlet: IOutlet): Promise<IOutlet>{
-    try{
-        outlet.password = await hashPassword(outlet.password);
-        const newOutlet = await OutletModel.create(outlet);
-        return newOutlet;
-    }
-    catch(error:unknown){
-        throw new Error((error as Error).message)        
-    }
-}
+//  */
+// export async function createOutlet(outlet: IOutlet): Promise<IOutlet>{
+//     try{
+//         outlet.password = await hashPassword(outlet.password);
+//         const newOutlet = await OutletModel.create(outlet);
+//         return newOutlet;
+//     }
+//     catch(error:unknown){
+//         throw new Error((error as Error).message)        
+//     }
+// }
 
