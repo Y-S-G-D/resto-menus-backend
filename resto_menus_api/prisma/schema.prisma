@@ -78,11 +78,19 @@ model item {
   outlet      outlet   @relation(fields: [outletId], references: [id])
   name        String
   description String
-  price       Float
+  itemPrice   itemPrice[]
   category    String
   imageUrls    String[] @default([])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model itemPrice{
+  id          Int   @id @default(autoincrement())
+  itemId      String
+  item        item     @relation(fields: [itemId], references: [id])
+  unit        String
+  price       Float
 }
 
 
