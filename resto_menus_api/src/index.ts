@@ -31,7 +31,6 @@ app.use(`/api/${API_VERSION ?? "v1"}`, indexRoute);
 
 
 app.get("*", (req:Request, res:Response) => {
-  console.log("Requested url not found🫥");
   res.status(404).json({
     success: false,
     message: "Requested url not found🫥",

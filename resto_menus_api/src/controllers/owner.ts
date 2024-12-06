@@ -85,4 +85,20 @@ export const createOutlet = async(req:Request, res:Response, next:NextFunction):
     }
 }
 
+export const getOutlets = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    try{
+        const outlets = await prisma.outlet.findMany({
+            where:{
+                ownerId:req.user?.id
+            }
+        });
+        res.status(200).json({
+            success:true,
+            data:outlets
+        });
+    }catch(err){
+        next(err);
+    }
+}
+
 
