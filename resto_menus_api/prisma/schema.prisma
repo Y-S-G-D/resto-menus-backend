@@ -10,91 +10,91 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")// This is your Prisma schema
+  url      = env("DATABASE_URL") // This is your Prisma schema
 }
 
 model owner {
-  id              String    @id @default(uuid())
+  id              String   @id @default(uuid())
   name            String
-  email           String    @unique
-  isEmailVerified Boolean   @default(false)
-  password        String    
-  phoneNo         String    
+  email           String   @unique
+  isEmailVerified Boolean  @default(false)
+  password        String
+  phoneNo         String
   outlets         outlet[]
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
-
 model outlet {
-  id              String   @id @default(uuid())
+  id              String     @id @default(uuid())
   logoUrl         String
-  owner           owner    @relation(fields: [ownerId], references: [id])
+  owner           owner      @relation(fields: [ownerId], references: [id])
   ownerId         String
   ownerName       String
   mobileNo        String
   outletName      String
   outletType      String
-  email           String   @unique
+  email           String     @unique
   city            String
-  isEmailVerified Boolean  @default(false)
-  isPhoneVerified Boolean  @default(false)
+  isEmailVerified Boolean    @default(false)
+  isPhoneVerified Boolean    @default(false)
   password        String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
   employees       employee[]
-  items           item[]
+  items           itemOutlet[] 
 }
 
-
 model employee {
-  id                 String   @id @default(uuid())
-  outletId           String
-  outlet             outlet   @relation(fields: [outletId], references: [id])
-  name               String
-  employeeId         String
-  dob                DateTime
-  gender             String
-  phoneNo            String
-  doj                DateTime
-  shift              String
-  position           String
-  supervisor         String
-  salary             Float
-  accountNo          String
-  ifscCode           String
-  accountHolderName  String
-  aadharNo           String
-  loginId            String
-  password           String
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                String   @id @default(uuid())
+  outletId          String
+  outlet            outlet   @relation(fields: [outletId], references: [id])
+  name              String
+  employeeId        String
+  dob               DateTime
+  gender            String
+  phoneNo           String
+  doj               DateTime
+  shift             String
+  position          String
+  supervisor        String
+  salary            Float
+  accountNo         String
+  ifscCode          String
+  accountHolderName String
+  aadharNo          String
+  loginId           String
+  password          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model item {
-  id          String   @id @default(uuid())
-  outletId    String
-  outlet      outlet   @relation(fields: [outletId], references: [id])
+  id          String      @id @default(uuid())
+  outlets itemOutlet[]
   name        String
   description String
   itemPrice   itemPrice[]
   category    String
-  imageUrls    String[] @default([])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  imageUrls   String[]    @default([])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
-model itemPrice{
-  id          Int   @id @default(autoincrement())
-  itemId      String
-  item        item     @relation(fields: [itemId], references: [id])
-  unit        String
-  price       Float
+model itemOutlet {
+  id      Int    @id @default(autoincrement())
+  itemId  String
+  outletId String
+  item    item   @relation(fields: [itemId], references: [id])
+  outlet  outlet @relation(fields: [outletId], references: [id])
+
+  @@unique([itemId, outletId])
 }
 
-
-
-
-
-
+model itemPrice {
+  id     Int    @id @default(autoincrement())
+  itemId String
+  item   item   @relation(fields: [itemId], references: [id])
+  unit   String
+  price  Float
+}

@@ -96,3 +96,4 @@ const extractBearerToken = (authorization: string): string | null => {
   }
   return authorization;
 };
+

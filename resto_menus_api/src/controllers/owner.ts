@@ -89,7 +89,17 @@ export const getOutlets = async(req:Request,res:Response,next:NextFunction):Prom
     try{
         const outlets = await prisma.outlet.findMany({
             where:{
-                ownerId:req.user?.id
+            ownerId:req.user?.id
+            },
+            select: {
+                id: true,
+                outletName: true,
+                outletType: true,
+                email: true,
+                city: true,
+                isEmailVerified: true,
+                isPhoneVerified: true,
+                password: false // explicitly exclude the password field
             }
         });
         res.status(200).json({
