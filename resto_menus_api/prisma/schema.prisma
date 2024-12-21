@@ -26,23 +26,23 @@ model owner {
 }
 
 model outlet {
-  id              String     @id @default(uuid())
+  id              String       @id @default(uuid())
   logoUrl         String
-  owner           owner      @relation(fields: [ownerId], references: [id])
+  owner           owner        @relation(fields: [ownerId], references: [id])
   ownerId         String
   ownerName       String
   mobileNo        String
   outletName      String
   outletType      String
-  email           String     @unique
+  email           String       @unique
   city            String
-  isEmailVerified Boolean    @default(false)
-  isPhoneVerified Boolean    @default(false)
+  isEmailVerified Boolean      @default(false)
+  isPhoneVerified Boolean      @default(false)
   password        String
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
   employees       employee[]
-  items           itemOutlet[] 
+  items           itemOutlet[]
 }
 
 model employee {
@@ -70,23 +70,24 @@ model employee {
 }
 
 model item {
-  id          String      @id @default(uuid())
-  outlets itemOutlet[]
+  id          String       @id @default(uuid())
+  outlets     itemOutlet[]
   name        String
   description String
   itemPrice   itemPrice[]
+  type        String       @default("")
   category    String
-  imageUrls   String[]    @default([])
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  imageUrls   String[]     @default([])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model itemOutlet {
-  id      Int    @id @default(autoincrement())
-  itemId  String
+  id       Int    @id @default(autoincrement())
+  itemId   String
   outletId String
-  item    item   @relation(fields: [itemId], references: [id])
-  outlet  outlet @relation(fields: [outletId], references: [id])
+  item     item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  outlet   outlet @relation(fields: [outletId], references: [id])
 
   @@unique([itemId, outletId])
 }
@@ -94,7 +95,7 @@ model itemOutlet {
 model itemPrice {
   id     Int    @id @default(autoincrement())
   itemId String
-  item   item   @relation(fields: [itemId], references: [id])
+  item   item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   unit   String
   price  Float
 }
